@@ -1,4 +1,9 @@
-let localStopsData = stopsDataRaw;
+let localStopsData = [
+    ...stopsDataPart1,
+    ...stopsDataPart2,
+    ...stopsDataPart3,
+	...stopsDataPart4
+];
 let searchTimeout = null;
 let currentStopLines = {};
 let selectedCityValue = ""; 
@@ -319,4 +324,5 @@ document.addEventListener('keydown', (e) => {
 		closePanel();
 		cityOptionsList.style.display = 'none';
 	}
+
 });
