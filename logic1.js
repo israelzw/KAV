@@ -1,8 +1,8 @@
-let localStopsData = [
-    ...stopsDataPart1,
-    ...stopsDataPart2,
-    ...stopsDataPart3,
-	...stopsDataPart4
+const localStopsData = [
+    ...(typeof stopsDataPart1 !== 'undefined' ? stopsDataPart1 : []),
+    ...(typeof stopsDataPart2 !== 'undefined' ? stopsDataPart2 : []),
+    ...(typeof stopsDataPart3 !== 'undefined' ? stopsDataPart3 : []),
+    ...(typeof stopsDataPart4 !== 'undefined' ? stopsDataPart4 : [])
 ];
 let searchTimeout = null;
 let currentStopLines = {};
@@ -326,3 +326,4 @@ document.addEventListener('keydown', (e) => {
 	}
 
 });
+
