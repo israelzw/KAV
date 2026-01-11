@@ -1,9 +1,4 @@
-const localStopsData = [
-    ...(typeof stopsDataPart1 !== 'undefined' ? stopsDataPart1 : []),
-    ...(typeof stopsDataPart2 !== 'undefined' ? stopsDataPart2 : []),
-    ...(typeof stopsDataPart3 !== 'undefined' ? stopsDataPart3 : []),
-    ...(typeof stopsDataPart4 !== 'undefined' ? stopsDataPart4 : [])
-];
+const localStopsData = stopsDataRaw; 
 let searchTimeout = null;
 let currentStopLines = {};
 let selectedCityValue = ""; 
@@ -326,4 +321,5 @@ document.addEventListener('keydown', (e) => {
 	}
 
 });
+
 
