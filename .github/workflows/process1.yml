@@ -1,0 +1,24 @@
+name: Update Data - Process 1
+
+on:
+  schedule:
+    - cron: '30 2 * * *' # הגדרתי חצי שעה אחרי כדי למנוע התנגשויות (Conflict) בזמן ה-Push
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm install
+      - run: node process1.js
+      - name: Commit and Push
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add database.js
+          git commit -m "Update Process 1: $(date +'%Y-%m-%d')" || exit 0
+          git push
