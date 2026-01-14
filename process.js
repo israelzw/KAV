@@ -26,7 +26,14 @@ async function get() {
 
     try {
         console.log("Downloading...");
-        const res = await fetch(url);
+        const res = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'User-Agent': 'Mozilla/5.0'
+            },
+            // הגדרת זמן המתנה ארוך יותר לחיבור
+            signal: AbortSignal.timeout(60000) 
+        });
         fs.writeFileSync(zipPath, Buffer.from(await res.arrayBuffer()));
 
         const zip = new admZip(zipPath);
