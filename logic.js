@@ -1,4 +1,5 @@
-const localStopsData = stopsDataRaw; 
+// איחוד כל החלקים למשתנה המקומי
+const localStopsData = stopsDataRaw;
 let searchTimeout = null;
 let currentStopLines = {};
 let selectedCityValue = ""; 
@@ -106,6 +107,7 @@ function renderLines(filter = "") {
         const agency = typeof stopsDataBoos !== 'undefined' ? stopsDataBoos.find(a => a.agency_id === mainRoute.חברה) : null;
         const aName = agency ? agency.agency_name : "לא ידוע";
         const aUrl = agency ? agency.agency_url : "#";
+        const aPhone = agency ? `טלפון: ${agency.agency_phone}` : "אין טלפון";
         const logoUrl = agency ? `logos/${agency.agency_id}.png` : '';
         const Yaad = mainRoute.יעד ? mainRoute.יעד.replace(/_/g, " - ") : cleanRouteName(mainRoute.ל);
         
@@ -117,7 +119,7 @@ function renderLines(filter = "") {
                 <div class="line-number-box" style="background-image: url('${logoUrl}');">
                     <span class="line-number-text">${lineNum}</span>
                 </div>
-                <a href="${aUrl}" target="_blank" class="agency-link" 
+                <a href="${aUrl}" target="_blank" data-phone="${aPhone}" class="agency-link" 
                    onclick="event.stopPropagation()">${aName}</a>
             </div>
             <div class="line-info">
@@ -182,12 +184,26 @@ function renderRouteStops(routeId, targetElement) {
     const routeData = (typeof stopsData !== 'undefined') ? stopsData.find(r => r.route_id === routeId) : null;
     targetElement.innerHTML = '';
     if (!routeData || !routeData.stops) return;
+    
     const ul = document.createElement('ul');
-    ul.style.listStyle = 'none'; ul.style.padding = '0';
+    ul.style.listStyle = 'none'; 
+    ul.style.padding = '0';
+    
     routeData.stops.forEach((stopName, idx) => {
         const li = document.createElement('li');
-        li.style.padding = '6px 0'; li.style.borderBottom = '1px solid #f0f0f0'; li.style.fontSize = '0.9em';
-        li.innerHTML = `<span style="color:#1a73e8; font-weight:bold; margin-left:8px;">${idx + 1}</span> <span>${stopName}</span>`;
+        li.style.padding = '6px 0'; 
+        li.style.borderBottom = '1px solid #f0f0f0'; 
+        li.style.fontSize = '0.9em';
+        li.style.display = 'flex'; 
+        li.style.alignItems = 'center';
+
+        // הוספנו text-align: center כדי שהספרה הבודדת תהיה באמצע הרוחב הקבוע
+        li.innerHTML = `
+            <span style="color:#1a73e8; font-weight:bold; width: 30px; display: inline-block; text-align: center; margin-left: 8px; flex-shrink: 0;">
+                ${idx + 1}
+            </span> 
+            <span>${stopName}</span>`;
+            
         ul.appendChild(li);
     });
     targetElement.appendChild(ul);
@@ -200,10 +216,14 @@ function showLineDetails(stop) {
     
     const content = document.getElementById('sidePanelContent');
     content.innerHTML = `
-        <div class="panel-header" style="margin-bottom:15px; border-bottom: 2px solid #eee; padding-bottom:10px;">
-            <h3 style="margin:0; color:#1a73e8;">${stop.stop_name}</h3>
-            <p style="margin:5px 0 0; font-size:0.85em; color:#666;">מספר תחנה: ${stop.stop_code}</p>
-        </div>
+		<div class="panel-header">
+			<a href="bingmaps:?collection=point.${stop.stop_lat}_${stop.stop_lon}_${encodeURIComponent(stop.stop_name)}&cp=${stop.stop_lat}~${stop.stop_lon}&lvl=18" style="text-decoration: none; display: inline-block;">
+				<h3 class="panel-header-name" title="לחץ להצגה במפה">${stop.stop_name}</h3>
+			</a>
+			<p style="margin:5px 0 0; font-size:0.85em; color:#666;">
+				מספר תחנה: ${stop.stop_code}
+			</p>
+		</div>
     `;
     
     renderLines();
@@ -319,7 +339,4 @@ document.addEventListener('keydown', (e) => {
 		closePanel();
 		cityOptionsList.style.display = 'none';
 	}
-
 });
-
-
