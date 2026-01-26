@@ -20,6 +20,7 @@
             background-color: var(--bg-color); 
             margin: 0; 
             padding: 0;
+			cursor: default;
             /* מעבר חלק עבור ה-padding שיוצר את הצמצום */
             transition: padding-left 0.3s ease;
             overflow: hidden; 
@@ -140,6 +141,23 @@
         }
         .side-panel.open { left: 0; }
         
+		.panel-header {
+			margin-bottom:15px;
+			border-bottom: 2px solid #eee;
+			padding-bottom:10px;
+			
+		}
+
+		.panel-header-name {
+			margin:0;
+			color:#1a73e8;
+			cursor: pointer;
+		}
+
+		.panel-header-name:hover {
+			color:#1151A7;
+		}
+		
         .panel-top-bar {
             background: white; padding: 0 15px; border-bottom: 1px solid #eee; 
             display: flex; align-items: center; height: 60px; gap: 10px; flex-shrink: 0;
@@ -191,12 +209,19 @@
 			color: #1a73e8; 
 			text-decoration: none; 
 			cursor: pointer; 
-			
+			position: relative;
 			/* התוספות ליישור לאמצע */
 			display: block; 
 			text-align: center; 
 			width: 100%;
 		}
+		
+        .agency-link:hover::after {
+            content: attr(data-phone); position: absolute; bottom: 125%; left: 50%;
+            transform: translateX(-50%); background: #202124; color: white;
+            padding: 6px 12px; border-radius: 6px; font-size: 12px; white-space: nowrap;
+            z-index: 10000; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
 		
         .line-info { padding: 10px; flex-grow: 1; display: flex; flex-direction: column; gap: 1px; }
         .line-info div { font-size: 13px; color: var(--text-main); }
@@ -237,10 +262,4 @@
 <script src="dataAgency.js"></script>
 <script src="logic.js"></script>
 </body>
-
 </html>
-
-
-
-
-
